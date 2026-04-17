@@ -2,15 +2,24 @@
 <html>
 <head>
   <meta charset="UTF-8">
-  <title>TON Connect</title>
+  <title>Mint TAGS</title>
 </head>
 <body>
 
-<h2>Connect TON Wallet</h2>
+<h2>Mint TAGS Token</h2>
 
 <div id="ton-connect"></div>
 
-<button onclick="sendTransaction()">Send 0.01 TON</button>
+<br><br>
+
+<label>Jumlah TON:</label><br>
+<input type="number" id="tonAmount" placeholder="Masukkan TON" />
+
+<p id="tagsResult">TAGS: 0</p>
+
+<button onclick="mintTokens()">Mint TAGS</button>
+
+<p id="status"></p>
 
 <script src="https://unpkg.com/@tonconnect/ui@latest/dist/tonconnect-ui.min.js"></script>
 <script src="app.js"></script>
