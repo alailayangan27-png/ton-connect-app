@@ -3,23 +3,32 @@
 <head>
   <meta charset="UTF-8">
   <title>Mint TAGS</title>
+  <link rel="stylesheet" href="style.css">
 </head>
+
 <body>
 
-<h2>Mint TAGS Token</h2>
+<div class="container">
 
-<div id="ton-connect"></div>
+  <div class="card">
 
-<br><br>
+    <h2>🚀 Mint TAGS</h2>
 
-<label>Jumlah TON:</label><br>
-<input type="number" id="tonAmount" placeholder="Masukkan TON" />
+    <div id="ton-connect"></div>
 
-<p id="tagsResult">TAGS: 0</p>
+    <div class="input-group">
+      <input type="number" id="tonAmount" placeholder="Enter TON amount">
+    </div>
 
-<button onclick="mintTokens()">Mint TAGS</button>
+    <p id="tagsResult">0 TAGS</p>
 
-<p id="status"></p>
+    <button onclick="mintTokens()">Mint Now</button>
+
+    <p id="status"></p>
+
+  </div>
+
+</div>
 
 <script src="https://unpkg.com/@tonconnect/ui@latest/dist/tonconnect-ui.min.js"></script>
 <script src="app.js"></script>
