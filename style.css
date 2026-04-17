@@ -2,21 +2,19 @@ body {
   margin: 0;
   font-family: Arial, sans-serif;
 
-  background: url('https://images.unsplash.com/photo-1639322537228-f710d846310a') no-repeat center center/cover;
+  background: url('https://images.unsplash.com/photo-1639322537228-f710d846310a') no-repeat center/cover;
 }
 
-/* Overlay gelap */
+/* overlay */
 body::before {
   content: "";
   position: fixed;
   width: 100%;
   height: 100%;
-  background: rgba(0,0,0,0.6);
-  top: 0;
-  left: 0;
+  background: rgba(0,0,0,0.7);
 }
 
-/* Container */
+/* layout */
 .container {
   position: relative;
   height: 100vh;
@@ -25,48 +23,62 @@ body::before {
   align-items: center;
 }
 
-/* Card Glass */
+/* card */
 .card {
-  background: rgba(255,255,255,0.1);
-  backdrop-filter: blur(15px);
-  padding: 30px;
+  width: 90%;
+  max-width: 360px;
+  padding: 25px;
   border-radius: 20px;
+  background: rgba(255,255,255,0.08);
+  backdrop-filter: blur(15px);
   text-align: center;
   color: white;
-  width: 90%;
-  max-width: 350px;
 }
 
-/* Input */
-.input-group input {
-  width: 100%;
-  padding: 12px;
-  border-radius: 10px;
-  border: none;
+/* input */
+.input-box {
+  display: flex;
   margin-top: 15px;
+}
+
+.input-box input {
+  flex: 1;
+  padding: 12px;
+  border-radius: 10px 0 0 10px;
+  border: none;
   font-size: 16px;
 }
 
-/* Button */
-button {
+/* max button */
+.max-btn {
+  padding: 12px;
+  border: none;
+  background: #ffb800;
+  color: black;
+  font-weight: bold;
+  border-radius: 0 10px 10px 0;
+}
+
+/* mint button */
+.mint-btn {
   margin-top: 15px;
   width: 100%;
   padding: 12px;
-  border: none;
   border-radius: 10px;
+  border: none;
   background: linear-gradient(45deg, #00c6ff, #0072ff);
   color: white;
   font-size: 16px;
-  cursor: pointer;
 }
 
-/* Hover */
-button:hover {
-  opacity: 0.9;
-}
-
+/* text */
 #tagsResult {
   margin-top: 10px;
   font-size: 18px;
   font-weight: bold;
+}
+
+#status {
+  margin-top: 10px;
+  font-size: 14px;
 }
