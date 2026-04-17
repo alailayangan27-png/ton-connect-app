@@ -3,54 +3,56 @@ const tonConnectUI = new TON_CONNECT_UI.TonConnectUI({
     buttonRootId: 'ton-connect'
 });
 
-let totalMintedTON = 0; // total global (sementara di frontend)
+let maxTON = 100;
+let totalMinted = 0;
 
-// Auto hitung TAGS
+// Auto hitung
 document.getElementById("tonAmount").addEventListener("input", (e) => {
     let ton = parseFloat(e.target.value) || 0;
+
+    if (ton > 100) {
+        ton = 100;
+        e.target.value = 100;
+    }
+
     let tags = ton * 10000;
-    document.getElementById("tagsResult").innerText = "TAGS: " + tags;
+    document.getElementById("tagsResult").innerText = tags + " TAGS";
 });
 
 async function mintTokens() {
     const ton = parseFloat(document.getElementById("tonAmount").value);
 
     if (!ton || ton <= 0) {
-        alert("Masukkan jumlah TON yang valid");
+        alert("Enter valid TON amount");
         return;
     }
 
-    if (totalMintedTON + ton > 100) {
-        alert("Max mint 100 TON tercapai!");
+    if (totalMinted + ton > maxTON) {
+        alert("Mint limit reached!");
         return;
     }
-
-    const amountNano = (ton * 1e9).toString();
 
     const tx = {
         validUntil: Math.floor(Date.now() / 1000) + 60,
         messages: [
             {
-                address: "UQAPRU6cHYSkS8hIxl-zbcts9yt8_GtYcSh_R0nbYnWL5lFX", // ganti alamat kamu
-                amount: amountNano
+                address: "UQAPRU6cHYSkS8hIxl-zbcts9yt8_GtYcSh_R0nbYnWL5lFX",
+                amount: (ton * 1e9).toString()
             }
         ]
     };
 
     try {
-        document.getElementById("status").innerText = "Mengirim transaksi...";
+        document.getElementById("status").innerText = "Processing...";
 
         await tonConnectUI.sendTransaction(tx);
 
-        totalMintedTON += ton;
-
-        const tags = ton * 10000;
+        totalMinted += ton;
 
         document.getElementById("status").innerText =
-            "Berhasil mint " + tags + " TAGS 🎉";
+            "Success! You got " + (ton * 10000) + " TAGS 🎉";
 
     } catch (err) {
-        document.getElementById("status").innerText = "Transaksi gagal ❌";
-        console.error(err);
+        document.getElementById("status").innerText = "Transaction failed";
     }
 }
