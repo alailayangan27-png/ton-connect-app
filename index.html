@@ -1,35 +1,68 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <meta charset="UTF-8">
-  <title>TAGS Mint</title>
-  <link rel="stylesheet" href="style.css">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<script src="https://unpkg.com/@tonconnect/ui@latest/dist/tonconnect-ui.min.js"></script>
+
+<style>
+body {
+    margin: 0;
+    font-family: sans-serif;
+    color: white;
+    background: black;
+}
+
+.container {
+    padding: 20px;
+    text-align: center;
+}
+
+input {
+    width: 80%;
+    padding: 10px;
+    margin-top: 20px;
+    font-size: 16px;
+}
+
+button {
+    padding: 12px 20px;
+    margin-top: 15px;
+    font-size: 16px;
+    background: #0088cc;
+    border: none;
+    color: white;
+    border-radius: 8px;
+}
+
+/* 🔥 sembunyikan wallet lain */
+.tc-modal .tc-wallets-list {
+    display: none !important;
+}
+</style>
 </head>
 
 <body>
 
 <div class="container">
-  <div class="card">
 
-    <h2>🚀 Mint TAGS</h2>
+<h2>🚀 Mint TAGS</h2>
 
-    <div id="ton-connect"></div>
+<div id="ton-connect"></div>
 
-    <div class="input-box">
-      <input type="number" id="tonAmount" placeholder="Enter TON amount">
-      <button class="max-btn" onclick="setMax()">MAX</button>
-    </div>
+<input id="tonAmount" placeholder="Enter TON amount">
 
-    <p id="tagsResult">0 TAGS</p>
+<br>
 
-    <button class="mint-btn" onclick="mintTokens()">Mint Now</button>
+<button onclick="setMax()">MAX</button>
+<button onclick="mintTokens()">MINT</button>
 
-    <p id="status"></p>
+<p id="tagsResult">0 TAGS</p>
+<p id="status"></p>
 
-  </div>
 </div>
 
-<script src="https://unpkg.com/@tonconnect/ui@latest/dist/tonconnect-ui.min.js"></script>
 <script src="app.js"></script>
 
 </body>
