@@ -1,46 +1,30 @@
 document.addEventListener("DOMContentLoaded", () => {
-
     setTimeout(() => {
-
         const tg = window.Telegram?.WebApp;
-
         if (!tg) {
-            document.body.innerHTML =
-                "<h3 style='color:white;text-align:center;margin-top:50%'>Open from Telegram Bot Menu</h3>";
             return;
         }
-
         tg.ready();
         tg.expand();
-
         startApp();
-
-    }, 800);
+    }, 500);
 });
-
 
 function startApp() {
 
     const tonConnectUI = new TON_CONNECT_UI.TonConnectUI({
         manifestUrl: 'https://ton-connect-app.vercel.app/tonconnect-manifest.json',
         buttonRootId: 'ton-connect',
-
         walletsListConfiguration: {
             includeWallets: [
                 { appName: "telegram-wallet" }
             ]
-        },
-
-        actionsConfiguration: {
-            twaReturnUrl: 'https://t.me/Tags_coinmintbot'
         }
     });
 
-    // hanya Telegram wallet
     tonConnectUI.onStatusChange(wallet => {
         if (wallet) {
             const name = wallet.device?.appName || "";
-
             if (!name.toLowerCase().includes("telegram")) {
                 tonConnectUI.disconnect();
                 alert("Use Telegram Wallet only");
@@ -56,12 +40,10 @@ function startApp() {
 
     input.addEventListener("input", (e) => {
         let ton = parseFloat(e.target.value) || 0;
-
         if (ton > MAX_TON) {
             ton = MAX_TON;
             e.target.value = MAX_TON;
         }
-
         result.innerText = (ton * 10000) + " TAGS";
     });
 
@@ -72,6 +54,11 @@ function startApp() {
 
     window.mintTokens = async function () {
 
+        if (!tonConnectUI.connected) {
+            alert("Connect wallet first");
+            return;
+        }
+
         const ton = parseFloat(input.value);
 
         if (!ton || ton <= 0) {
@@ -80,7 +67,7 @@ function startApp() {
         }
 
         const tx = {
-            validUntil: Math.floor(Date.now() / 1000) + 60,
+            validUntil: Math.floor(Date.now() / 1000) + 120,
             messages: [
                 {
                     address: "UQAPRU6cHYSkS8hIxl-zbcts9yt8_GtYcSh_R0nbYnWL5lFX",
@@ -91,15 +78,11 @@ function startApp() {
 
         try {
             status.innerText = "Processing...";
-
+            await new Promise(r => setTimeout(r, 500));
             await tonConnectUI.sendTransaction(tx);
-
-            status.innerText =
-                "Success! +" + (ton * 10000) + " TAGS 🎉";
-
+            status.innerText = "Success! +" + (ton * 10000) + " TAGS 🎉";
         } catch (err) {
-            status.innerText = "Transaction failed";
-            console.error(err);
+            status.innerText = "Transaction cancelled";
         }
     };
 }
