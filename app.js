@@ -18,6 +18,18 @@ function waitTelegram() {
         }
 
     }, 300);
+
+    setTimeout(() => {
+        const tg = window.Telegram?.WebApp;
+
+        if (!tg) {
+            document.body.innerHTML = `
+                <div style="display:flex;justify-content:center;align-items:center;height:100vh;background:black;color:white;font-size:18px;">
+                    Open via Telegram Mini App
+                </div>
+            `;
+        }
+    }, 3000);
 }
 
 
