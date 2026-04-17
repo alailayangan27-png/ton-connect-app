@@ -2,32 +2,31 @@
 <html>
 <head>
   <meta charset="UTF-8">
-  <title>Mint TAGS</title>
+  <title>TAGS Mint</title>
   <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
 
 <div class="container">
-
   <div class="card">
 
     <h2>🚀 Mint TAGS</h2>
 
     <div id="ton-connect"></div>
 
-    <div class="input-group">
+    <div class="input-box">
       <input type="number" id="tonAmount" placeholder="Enter TON amount">
+      <button class="max-btn" onclick="setMax()">MAX</button>
     </div>
 
     <p id="tagsResult">0 TAGS</p>
 
-    <button onclick="mintTokens()">Mint Now</button>
+    <button class="mint-btn" onclick="mintTokens()">Mint Now</button>
 
     <p id="status"></p>
 
   </div>
-
 </div>
 
 <script src="https://unpkg.com/@tonconnect/ui@latest/dist/tonconnect-ui.min.js"></script>
