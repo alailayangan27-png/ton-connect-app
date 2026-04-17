@@ -4,7 +4,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
         const tg = window.Telegram?.WebApp;
 
-        if (!tg || !tg.initData) {
+        if (!tg) {
             document.body.innerHTML = `
                 <div style="display:flex;justify-content:center;align-items:center;height:100vh;background:black;color:white;font-size:18px;">
                     Open via Telegram Mini App
@@ -18,7 +18,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
         startApp();
 
-    }, 500);
+    }, 800);
 });
 
 
@@ -87,6 +87,7 @@ function startApp() {
 
         try {
             status.innerText = "Processing...";
+            await new Promise(r => setTimeout(r, 500));
             await tonConnectUI.sendTransaction(tx);
             status.innerText = "Success!";
         } catch {
