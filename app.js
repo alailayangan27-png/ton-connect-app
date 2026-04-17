@@ -3,22 +3,54 @@ const tonConnectUI = new TON_CONNECT_UI.TonConnectUI({
     buttonRootId: 'ton-connect'
 });
 
-tonConnectUI.onStatusChange(wallet => {
-    if (wallet) {
-        alert("Connected: " + wallet.account.address);
-    }
+let totalMintedTON = 0; // total global (sementara di frontend)
+
+// Auto hitung TAGS
+document.getElementById("tonAmount").addEventListener("input", (e) => {
+    let ton = parseFloat(e.target.value) || 0;
+    let tags = ton * 10000;
+    document.getElementById("tagsResult").innerText = "TAGS: " + tags;
 });
 
-async function sendTransaction() {
+async function mintTokens() {
+    const ton = parseFloat(document.getElementById("tonAmount").value);
+
+    if (!ton || ton <= 0) {
+        alert("Masukkan jumlah TON yang valid");
+        return;
+    }
+
+    if (totalMintedTON + ton > 100) {
+        alert("Max mint 100 TON tercapai!");
+        return;
+    }
+
+    const amountNano = (ton * 1e9).toString();
+
     const tx = {
         validUntil: Math.floor(Date.now() / 1000) + 60,
         messages: [
             {
-                address: "EQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAM9c",
-                amount: "10000000"
+                address: "UQAPRU6cHYSkS8hIxl-zbcts9yt8_GtYcSh_R0nbYnWL5lFX", // ganti alamat kamu
+                amount: amountNano
             }
         ]
     };
 
-    await tonConnectUI.sendTransaction(tx);
+    try {
+        document.getElementById("status").innerText = "Mengirim transaksi...";
+
+        await tonConnectUI.sendTransaction(tx);
+
+        totalMintedTON += ton;
+
+        const tags = ton * 10000;
+
+        document.getElementById("status").innerText =
+            "Berhasil mint " + tags + " TAGS 🎉";
+
+    } catch (err) {
+        document.getElementById("status").innerText = "Transaksi gagal ❌";
+        console.error(err);
+    }
 }
