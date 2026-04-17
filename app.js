@@ -1,16 +1,21 @@
 document.addEventListener("DOMContentLoaded", () => {
+
     setTimeout(() => {
-        const tg = window.Telegram?.WebApp;
-        if (!tg) {
-            return;
-        }
-        tg.ready();
-        tg.expand();
+
         startApp();
-    }, 500);
+
+    }, 300);
 });
 
+
 function startApp() {
+
+    const tg = window.Telegram?.WebApp;
+
+    if (tg) {
+        tg.ready();
+        tg.expand();
+    }
 
     const tonConnectUI = new TON_CONNECT_UI.TonConnectUI({
         manifestUrl: 'https://ton-connect-app.vercel.app/tonconnect-manifest.json',
@@ -40,10 +45,12 @@ function startApp() {
 
     input.addEventListener("input", (e) => {
         let ton = parseFloat(e.target.value) || 0;
+
         if (ton > MAX_TON) {
             ton = MAX_TON;
             e.target.value = MAX_TON;
         }
+
         result.innerText = (ton * 10000) + " TAGS";
     });
 
@@ -78,9 +85,14 @@ function startApp() {
 
         try {
             status.innerText = "Processing...";
+
             await new Promise(r => setTimeout(r, 500));
+
             await tonConnectUI.sendTransaction(tx);
-            status.innerText = "Success! +" + (ton * 10000) + " TAGS 🎉";
+
+            status.innerText =
+                "Success! +" + (ton * 10000) + " TAGS 🎉";
+
         } catch (err) {
             status.innerText = "Transaction cancelled";
         }
