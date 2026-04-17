@@ -1,28 +1,28 @@
 document.addEventListener("DOMContentLoaded", () => {
 
-    const tg = window.Telegram?.WebApp;
+    setTimeout(() => {
 
-    // ❌ kalau benar-benar bukan dari Telegram
-    if (!tg) {
-        document.body.innerHTML =
-            "<h3 style='color:white;text-align:center;margin-top:50%'>Open via Telegram</h3>";
-        return;
-    }
+        const tg = window.Telegram?.WebApp;
 
-    // ✅ paksa Telegram ready
-    tg.ready();
-    tg.expand();
+        if (!tg) {
+            document.body.innerHTML =
+                "<h3 style='color:white;text-align:center;margin-top:50%'>Open from Telegram Bot Menu</h3>";
+            return;
+        }
 
-    startApp();
+        tg.ready();
+        tg.expand();
+
+        startApp();
+
+    }, 800);
 });
+
 
 function startApp() {
 
-    const tg = window.Telegram.WebApp;
-
-    // 🔗 TON CONNECT (Telegram Wallet only)
     const tonConnectUI = new TON_CONNECT_UI.TonConnectUI({
-        manifestUrl: 'https://ton-connect-app.vercel.app/tonconnect-manifest.json', // 🔴 GANTI
+        manifestUrl: 'https://ton-connect-app.vercel.app/tonconnect-manifest.json',
         buttonRootId: 'ton-connect',
 
         walletsListConfiguration: {
@@ -32,11 +32,11 @@ function startApp() {
         },
 
         actionsConfiguration: {
-            twaReturnUrl: 'https://t.me/Tags_coinmintbot' // 🔴 GANTI
+            twaReturnUrl: 'https://t.me/Tags_coinmintbot'
         }
     });
 
-    // 🔒 blok wallet selain Telegram
+    // hanya Telegram wallet
     tonConnectUI.onStatusChange(wallet => {
         if (wallet) {
             const name = wallet.device?.appName || "";
@@ -54,7 +54,6 @@ function startApp() {
     const result = document.getElementById("tagsResult");
     const status = document.getElementById("status");
 
-    // 🔢 hitung TAGS
     input.addEventListener("input", (e) => {
         let ton = parseFloat(e.target.value) || 0;
 
@@ -66,13 +65,11 @@ function startApp() {
         result.innerText = (ton * 10000) + " TAGS";
     });
 
-    // 🔘 tombol MAX
     window.setMax = function () {
         input.value = MAX_TON;
         result.innerText = (MAX_TON * 10000) + " TAGS";
     };
 
-    // 🚀 mint
     window.mintTokens = async function () {
 
         const ton = parseFloat(input.value);
@@ -86,7 +83,7 @@ function startApp() {
             validUntil: Math.floor(Date.now() / 1000) + 60,
             messages: [
                 {
-                    address: "UQAPRU6cHYSkS8hIxl-zbcts9yt8_GtYcSh_R0nbYnWL5lFX", // 🔴 GANTI
+                    address: "UQAPRU6cHYSkS8hIxl-zbcts9yt8_GtYcSh_R0nbYnWL5lFX",
                     amount: (ton * 1e9).toString()
                 }
             ]
