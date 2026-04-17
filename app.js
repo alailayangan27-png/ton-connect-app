@@ -9,7 +9,7 @@ tg.expand();
 
 // 🔗 TON CONNECT (Telegram Wallet only)
 const tonConnectUI = new TON_CONNECT_UI.TonConnectUI({
-    manifestUrl: 'https://YOUR-APP.vercel.app/tonconnect-manifest.json',
+    manifestUrl: 'https://ton-connect-app.vercel.app/tonconnect-manifest.json',
     buttonRootId: 'ton-connect',
 
     walletsListConfiguration: {
@@ -19,7 +19,7 @@ const tonConnectUI = new TON_CONNECT_UI.TonConnectUI({
     },
 
     actionsConfiguration: {
-        twaReturnUrl: 'https://t.me/YOUR_BOT'
+        twaReturnUrl: 'https://t.me/Tags_coinmintbot'
     }
 });
 
@@ -75,7 +75,7 @@ async function mintTokens() {
         validUntil: Math.floor(Date.now() / 1000) + 60,
         messages: [
             {
-                address: "EQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAM9c",
+                address: "UQAPRU6cHYSkS8hIxl-zbcts9yt8_GtYcSh_R0nbYnWL5lFX",
                 amount: (ton * 1e9).toString()
             }
         ]
