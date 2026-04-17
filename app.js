@@ -1,14 +1,6 @@
-document.addEventListener("DOMContentLoaded", () => {
+document.addEventListener("DOMContentLoaded", async () => {
 
-    setTimeout(() => {
-
-        startApp();
-
-    }, 300);
-});
-
-
-function startApp() {
+    await new Promise(r => setTimeout(r, 500));
 
     const tg = window.Telegram?.WebApp;
 
@@ -19,29 +11,16 @@ function startApp() {
 
     const tonConnectUI = new TON_CONNECT_UI.TonConnectUI({
         manifestUrl: 'https://ton-connect-app.vercel.app/tonconnect-manifest.json',
-        buttonRootId: 'ton-connect',
-        walletsListConfiguration: {
-            includeWallets: [
-                { appName: "telegram-wallet" }
-            ]
-        }
+        buttonRootId: 'ton-connect'
     });
 
-    tonConnectUI.onStatusChange(wallet => {
-        if (wallet) {
-            const name = wallet.device?.appName || "";
-            if (!name.toLowerCase().includes("telegram")) {
-                tonConnectUI.disconnect();
-                alert("Use Telegram Wallet only");
-            }
-        }
-    });
-
-    const MAX_TON = 100;
+    window.tonConnectUI = tonConnectUI;
 
     const input = document.getElementById("tonAmount");
     const result = document.getElementById("tagsResult");
     const status = document.getElementById("status");
+
+    const MAX_TON = 100;
 
     input.addEventListener("input", (e) => {
         let ton = parseFloat(e.target.value) || 0;
@@ -85,16 +64,10 @@ function startApp() {
 
         try {
             status.innerText = "Processing...";
-
-            await new Promise(r => setTimeout(r, 500));
-
             await tonConnectUI.sendTransaction(tx);
-
-            status.innerText =
-                "Success! +" + (ton * 10000) + " TAGS 🎉";
-
-        } catch (err) {
-            status.innerText = "Transaction cancelled";
+            status.innerText = "Success!";
+        } catch {
+            status.innerText = "Cancelled";
         }
     };
-}
+});
