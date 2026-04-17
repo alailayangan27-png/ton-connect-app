@@ -1,23 +1,6 @@
 document.addEventListener("DOMContentLoaded", () => {
-    waitTelegram();
-});
 
-function waitTelegram() {
-
-    const interval = setInterval(() => {
-
-        const tg = window.Telegram?.WebApp;
-
-        if (tg) {
-            clearInterval(interval);
-
-            tg.ready();
-            tg.expand();
-
-            startApp();
-        }
-
-    }, 300);
+    startApp();
 
     setTimeout(() => {
         const tg = window.Telegram?.WebApp;
@@ -28,9 +11,13 @@ function waitTelegram() {
                     Open via Telegram Mini App
                 </div>
             `;
+        } else {
+            tg.ready();
+            tg.expand();
         }
-    }, 3000);
-}
+    }, 1500);
+
+});
 
 
 function startApp() {
