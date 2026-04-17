@@ -1,13 +1,8 @@
 document.addEventListener("DOMContentLoaded", () => {
-
     waitTelegram();
-
 });
 
-
 function waitTelegram() {
-
-    let tries = 0;
 
     const interval = setInterval(() => {
 
@@ -22,23 +17,17 @@ function waitTelegram() {
             startApp();
         }
 
-        tries++;
-
-        if (tries > 10) {
-            clearInterval(interval);
-
-            document.body.innerHTML = `
-                <div style="display:flex;justify-content:center;align-items:center;height:100vh;background:black;color:white;font-size:18px;">
-                    Failed to load Telegram Mini App
-                </div>
-            `;
-        }
-
     }, 300);
 }
 
 
 function startApp() {
+
+    const input = document.getElementById("tonAmount");
+    const result = document.getElementById("tagsResult");
+    const status = document.getElementById("status");
+
+    if (!input || !result || !status) return;
 
     const tonConnectUI = new TON_CONNECT_UI.TonConnectUI({
         manifestUrl: 'https://ton-connect-app.vercel.app/tonconnect-manifest.json',
@@ -54,10 +43,6 @@ function startApp() {
             }
         }
     });
-
-    const input = document.getElementById("tonAmount");
-    const result = document.getElementById("tagsResult");
-    const status = document.getElementById("status");
 
     const MAX_TON = 100;
 
@@ -109,4 +94,4 @@ function startApp() {
             status.innerText = "Cancelled";
         }
     };
-        }
+}
