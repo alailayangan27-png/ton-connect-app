@@ -1,47 +1,20 @@
 document.addEventListener("DOMContentLoaded", () => {
 
-    startApp();
+    const tg = window.Telegram?.WebApp;
 
-    setTimeout(() => {
-        const tg = window.Telegram?.WebApp;
-
-        if (!tg) {
-            document.body.innerHTML = `
-                <div style="display:flex;justify-content:center;align-items:center;height:100vh;background:black;color:white;font-size:18px;">
-                    Open via Telegram Mini App
-                </div>
-            `;
-        } else {
-            tg.ready();
-            tg.expand();
-        }
-    }, 1500);
-
-});
-
-
-function startApp() {
-
-    const input = document.getElementById("tonAmount");
-    const result = document.getElementById("tagsResult");
-    const status = document.getElementById("status");
-
-    if (!input || !result || !status) return;
+    if (tg) {
+        tg.ready();
+        tg.expand();
+    }
 
     const tonConnectUI = new TON_CONNECT_UI.TonConnectUI({
         manifestUrl: 'https://ton-connect-app.vercel.app/tonconnect-manifest.json',
         buttonRootId: 'ton-connect'
     });
 
-    tonConnectUI.onStatusChange(wallet => {
-        if (wallet) {
-            const name = wallet.device?.appName || "";
-            if (!name.toLowerCase().includes("telegram")) {
-                tonConnectUI.disconnect();
-                alert("Use Telegram Wallet only");
-            }
-        }
-    });
+    const input = document.getElementById("tonAmount");
+    const result = document.getElementById("tagsResult");
+    const status = document.getElementById("status");
 
     const MAX_TON = 100;
 
@@ -93,4 +66,4 @@ function startApp() {
             status.innerText = "Cancelled";
         }
     };
-}
+});
