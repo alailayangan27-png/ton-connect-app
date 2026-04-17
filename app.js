@@ -1,5 +1,5 @@
 const tonConnectUI = new TON_CONNECT_UI.TonConnectUI({
-    manifestUrl: 'https://YOUR-APP.vercel.app/tonconnect-manifest.json',
+    manifestUrl: 'https://ton-connect-app.vercel.app/tonconnect-manifest.json',
     buttonRootId: 'ton-connect'
 });
 
