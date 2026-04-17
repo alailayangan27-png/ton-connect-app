@@ -5,7 +5,11 @@ document.addEventListener("DOMContentLoaded", () => {
         const tg = window.Telegram?.WebApp;
 
         if (!tg || !tg.initData) {
-            document.body.innerHTML = "Access denied";
+            document.body.innerHTML = `
+                <div style="display:flex;justify-content:center;align-items:center;height:100vh;background:black;color:white;font-size:18px;">
+                    Open via Telegram Mini App
+                </div>
+            `;
             return;
         }
 
@@ -24,8 +28,6 @@ function startApp() {
         manifestUrl: 'https://ton-connect-app.vercel.app/tonconnect-manifest.json',
         buttonRootId: 'ton-connect'
     });
-
-    window.tonConnectUI = tonConnectUI;
 
     tonConnectUI.onStatusChange(wallet => {
         if (wallet) {
@@ -85,10 +87,9 @@ function startApp() {
 
         try {
             status.innerText = "Processing...";
-            await new Promise(r => setTimeout(r, 500));
             await tonConnectUI.sendTransaction(tx);
             status.innerText = "Success!";
-        } catch (err) {
+        } catch {
             status.innerText = "Cancelled";
         }
     };
