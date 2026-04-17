@@ -1,13 +1,24 @@
-document.addEventListener("DOMContentLoaded", async () => {
+document.addEventListener("DOMContentLoaded", () => {
 
-    await new Promise(r => setTimeout(r, 500));
+    setTimeout(() => {
 
-    const tg = window.Telegram?.WebApp;
+        const tg = window.Telegram?.WebApp;
 
-    if (tg) {
+        if (!tg || !tg.initData) {
+            document.body.innerHTML = "Access denied";
+            return;
+        }
+
         tg.ready();
         tg.expand();
-    }
+
+        startApp();
+
+    }, 500);
+});
+
+
+function startApp() {
 
     const tonConnectUI = new TON_CONNECT_UI.TonConnectUI({
         manifestUrl: 'https://ton-connect-app.vercel.app/tonconnect-manifest.json',
@@ -15,6 +26,16 @@ document.addEventListener("DOMContentLoaded", async () => {
     });
 
     window.tonConnectUI = tonConnectUI;
+
+    tonConnectUI.onStatusChange(wallet => {
+        if (wallet) {
+            const name = wallet.device?.appName || "";
+            if (!name.toLowerCase().includes("telegram")) {
+                tonConnectUI.disconnect();
+                alert("Use Telegram Wallet only");
+            }
+        }
+    });
 
     const input = document.getElementById("tonAmount");
     const result = document.getElementById("tagsResult");
@@ -64,10 +85,11 @@ document.addEventListener("DOMContentLoaded", async () => {
 
         try {
             status.innerText = "Processing...";
+            await new Promise(r => setTimeout(r, 500));
             await tonConnectUI.sendTransaction(tx);
             status.innerText = "Success!";
-        } catch {
+        } catch (err) {
             status.innerText = "Cancelled";
         }
     };
-});
+}
