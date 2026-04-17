@@ -1,13 +1,17 @@
-function isTelegram() {
-    return window.Telegram && window.Telegram.WebApp;
-}
+document.addEventListener("DOMContentLoaded", () => {
 
-window.addEventListener("load", () => {
+    const tg = window.Telegram?.WebApp;
 
-    if (!isTelegram()) {
-        document.body.innerHTML = "<h3 style='color:white;text-align:center;margin-top:50%'>Open via Telegram</h3>";
+    // ❌ kalau benar-benar bukan dari Telegram
+    if (!tg) {
+        document.body.innerHTML =
+            "<h3 style='color:white;text-align:center;margin-top:50%'>Open via Telegram</h3>";
         return;
     }
+
+    // ✅ paksa Telegram ready
+    tg.ready();
+    tg.expand();
 
     startApp();
 });
@@ -15,10 +19,10 @@ window.addEventListener("load", () => {
 function startApp() {
 
     const tg = window.Telegram.WebApp;
-    tg.expand();
 
+    // 🔗 TON CONNECT (Telegram Wallet only)
     const tonConnectUI = new TON_CONNECT_UI.TonConnectUI({
-        manifestUrl: 'https://ton-connect-app.vercel.app/tonconnect-manifest.json',
+        manifestUrl: 'https://ton-connect-app.vercel.app/tonconnect-manifest.json', // 🔴 GANTI
         buttonRootId: 'ton-connect',
 
         walletsListConfiguration: {
@@ -28,11 +32,11 @@ function startApp() {
         },
 
         actionsConfiguration: {
-            twaReturnUrl: 'https://t.me/Tags_coinmintbot'
+            twaReturnUrl: 'https://t.me/Tags_coinmintbot' // 🔴 GANTI
         }
     });
 
-    // hanya telegram wallet
+    // 🔒 blok wallet selain Telegram
     tonConnectUI.onStatusChange(wallet => {
         if (wallet) {
             const name = wallet.device?.appName || "";
@@ -46,7 +50,12 @@ function startApp() {
 
     const MAX_TON = 100;
 
-    document.getElementById("tonAmount").addEventListener("input", (e) => {
+    const input = document.getElementById("tonAmount");
+    const result = document.getElementById("tagsResult");
+    const status = document.getElementById("status");
+
+    // 🔢 hitung TAGS
+    input.addEventListener("input", (e) => {
         let ton = parseFloat(e.target.value) || 0;
 
         if (ton > MAX_TON) {
@@ -54,18 +63,19 @@ function startApp() {
             e.target.value = MAX_TON;
         }
 
-        document.getElementById("tagsResult").innerText =
-            (ton * 10000) + " TAGS";
+        result.innerText = (ton * 10000) + " TAGS";
     });
 
+    // 🔘 tombol MAX
     window.setMax = function () {
-        document.getElementById("tonAmount").value = MAX_TON;
-        document.getElementById("tagsResult").innerText =
-            (MAX_TON * 10000) + " TAGS";
+        input.value = MAX_TON;
+        result.innerText = (MAX_TON * 10000) + " TAGS";
     };
 
+    // 🚀 mint
     window.mintTokens = async function () {
-        const ton = parseFloat(document.getElementById("tonAmount").value);
+
+        const ton = parseFloat(input.value);
 
         if (!ton || ton <= 0) {
             alert("Enter valid TON");
@@ -76,22 +86,23 @@ function startApp() {
             validUntil: Math.floor(Date.now() / 1000) + 60,
             messages: [
                 {
-                    address: "UQAPRU6cHYSkS8hIxl-zbcts9yt8_GtYcSh_R0nbYnWL5lFX",
+                    address: "UQAPRU6cHYSkS8hIxl-zbcts9yt8_GtYcSh_R0nbYnWL5lFX", // 🔴 GANTI
                     amount: (ton * 1e9).toString()
                 }
             ]
         };
 
         try {
-            document.getElementById("status").innerText = "Processing...";
+            status.innerText = "Processing...";
 
             await tonConnectUI.sendTransaction(tx);
 
-            document.getElementById("status").innerText =
+            status.innerText =
                 "Success! +" + (ton * 10000) + " TAGS 🎉";
 
         } catch (err) {
-            document.getElementById("status").innerText = "Transaction failed";
+            status.innerText = "Transaction failed";
+            console.error(err);
         }
     };
 }
