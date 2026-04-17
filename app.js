@@ -12,6 +12,17 @@ document.addEventListener("DOMContentLoaded", () => {
         buttonRootId: 'ton-connect'
     });
 
+    tonConnectUI.onStatusChange(wallet => {
+        if (wallet) {
+            const name = wallet.device?.appName || "";
+
+            if (!name.toLowerCase().includes("telegram")) {
+                tonConnectUI.disconnect();
+                alert("Only Telegram Wallet allowed");
+            }
+        }
+    });
+
     const input = document.getElementById("tonAmount");
     const result = document.getElementById("tagsResult");
     const status = document.getElementById("status");
@@ -66,4 +77,5 @@ document.addEventListener("DOMContentLoaded", () => {
             status.innerText = "Cancelled";
         }
     };
+
 });
