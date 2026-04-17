@@ -1,25 +1,41 @@
 document.addEventListener("DOMContentLoaded", () => {
 
-    setTimeout(() => {
+    waitTelegram();
+
+});
+
+
+function waitTelegram() {
+
+    let tries = 0;
+
+    const interval = setInterval(() => {
 
         const tg = window.Telegram?.WebApp;
 
-        if (!tg) {
-            document.body.innerHTML = `
-                <div style="display:flex;justify-content:center;align-items:center;height:100vh;background:black;color:white;font-size:18px;">
-                    Open via Telegram Mini App
-                </div>
-            `;
-            return;
+        if (tg) {
+            clearInterval(interval);
+
+            tg.ready();
+            tg.expand();
+
+            startApp();
         }
 
-        tg.ready();
-        tg.expand();
+        tries++;
 
-        startApp();
+        if (tries > 10) {
+            clearInterval(interval);
 
-    }, 800);
-});
+            document.body.innerHTML = `
+                <div style="display:flex;justify-content:center;align-items:center;height:100vh;background:black;color:white;font-size:18px;">
+                    Failed to load Telegram Mini App
+                </div>
+            `;
+        }
+
+    }, 300);
+}
 
 
 function startApp() {
@@ -87,11 +103,10 @@ function startApp() {
 
         try {
             status.innerText = "Processing...";
-            await new Promise(r => setTimeout(r, 500));
             await tonConnectUI.sendTransaction(tx);
             status.innerText = "Success!";
         } catch {
             status.innerText = "Cancelled";
         }
     };
-}
+        }
